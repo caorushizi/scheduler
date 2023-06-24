@@ -1,0 +1,60 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum CourseType {
+  FREE
+  COMBAT
+  PLAN
+  MINI
+}
+
+model Course {
+  id        Int        @id @default(autoincrement())
+  cid       String     @unique
+  type      CourseType
+  title     String?    @default("")
+  link      String?    @default("")
+  poster    String?    @default("")
+  catgoryId Int?       @default(0)
+  catgory   Catgory?   @relation(fields: [catgoryId], references: [id])
+  tags      Tag[]
+  siteId    Int?
+  site      Site?      @relation(fields: [siteId], references: [id])
+  createdAt DateTime?  @default(now())
+  updatedAt DateTime?  @default(now()) @updatedAt
+}
+
+model Tag {
+  id        Int       @id @default(autoincrement())
+  name      String
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+  Course    Course?   @relation(fields: [courseId], references: [id])
+  courseId  Int?
+}
+
+model Site {
+  id        Int       @id @default(autoincrement())
+  name      String
+  url       String
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+  Course    Course[]
+}
+
+model Catgory {
+  id        Int       @id @default(autoincrement())
+  name      String
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+  Course    Course[]
+}

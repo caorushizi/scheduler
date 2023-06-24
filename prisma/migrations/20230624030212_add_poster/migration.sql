@@ -1,0 +1,4 @@
+-- AlterTable
+ALTER TABLE `Course` ADD COLUMN `poster` VARCHAR(191) NULL DEFAULT '',
+    MODIFY `title` VARCHAR(191) NULL DEFAULT '',
+    MODIFY `link` VARCHAR(191) NULL DEFAULT '';
